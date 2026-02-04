@@ -80,7 +80,7 @@ resource "aws_eks_node_group" "example" {
   # Ensure that IAM Role permissions are created before and deleted after EKS Node Group handling.
   # Otherwise, EKS will not be able to properly delete EC2 Instances and Elastic Network Interfaces.
   depends_on = [
-    aws_eks_addon.addons,
+    aws_eks_addon.vpc_cni,
     aws_iam_role_policy_attachment.worker_node,
     aws_iam_role_policy_attachment.example_AmazonEKS_CNI_Policy,
     aws_iam_role_policy_attachment.node_AmazonEC2ContainerRegistryPullOnly,
@@ -129,10 +129,16 @@ data "aws_eks_addon_version" "addons" {
   kubernetes_version = aws_eks_cluster.eks.version
   most_recent        = true
 }
+resource "aws_eks_addon" "vpc_cni" {
+  cluster_name  = aws_eks_cluster.eks.name
+  addon_name    = "vpc-cni"
+  addon_version = data.aws_eks_addon_version.addons["vpc-cni"].version
+}
+resource "aws_eks_addon" "post_node_addons" {
+  for_each      = toset(["coredns", "kube-proxy"])
+  cluster_name  = aws_eks_cluster.eks.name
+  addon_name    = each.key
+  addon_version = data.aws_eks_addon_version.addons[each.key].version
 
-resource "aws_eks_addon" "addons" {
-  for_each       = data.aws_eks_addon_version.addons
-  cluster_name   = aws_eks_cluster.eks.name
-  addon_name     = each.key
-  addon_version  = each.value.version
+  depends_on = [aws_eks_node_group.example]
 }

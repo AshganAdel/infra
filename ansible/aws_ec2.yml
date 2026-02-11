@@ -3,8 +3,7 @@ regions:
   - eu-north-1
 filters:
   instance-state-name: running
-  tags:Name: agent
+  tag:Name: agent
 compose:
-  ansible_host: public_ip_address
-  ansible_user: "'ubuntu'"
+  ansible_user: ubuntu
 

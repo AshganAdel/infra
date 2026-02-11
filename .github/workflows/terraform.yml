@@ -58,7 +58,7 @@ jobs:
       - name: add sshkey 
         run: |
           mkdir -p ~/.ssh
-          sudo echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
       - name: Install Ansible
         run: |

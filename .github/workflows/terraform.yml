@@ -72,10 +72,9 @@ jobs:
           | jq -r '
             ._meta.hostvars
             | to_entries[]
-            | .value.ansible_host 
+            | .value.ansible_host
             | if type=="object" then .__ansible_unsafe else . end
-          ' \  
-          | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
+          ' | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
           ansible-playbook playbook.yml
         working-directory: ansible
       

@@ -2,7 +2,7 @@
   connection: amazon.aws.aws_ssm
   hosts: all
   vars:
-    ec2_name: "{{ ec2_tags.Name | default('ubuntu-node') }}"
+    ec2_name: "{{ ec2_tags.Name | default('agent') }}"
   roles:
     #- awscli
     #- kubectl

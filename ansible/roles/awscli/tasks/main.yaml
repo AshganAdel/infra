@@ -1,0 +1,35 @@
+- name: Install required packages
+  become: true
+  apt:
+   name: unzip
+   state: present
+   update_cache: yes
+
+- name: Download AWS CLI 
+  become: true
+  get_url:
+   url: https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip
+   dest: /tmp/awscliv2.zip
+   mode: '0644'
+
+- name: Unzip AWS CLI
+  become: true
+  unarchive:
+   src: /tmp/awscliv2.zip
+   dest: /tmp
+   remote_src: yes
+   creates: /tmp/aws/install
+
+- name: Install AWS CLI
+  become: true
+  command: /tmp/aws/install
+  args:
+    creates: /usr/local/bin/aws
+
+- name: configure awscli 
+  shell: |
+    aws configure set aws_access_key_id "{{ aws_access_key }}"
+    aws configure set aws_secret_access_key "{{ aws_access_pass }}"
+    aws configure set region "eu-north-1"
+  args:
+    creates: /home/ubuntu/.aws/credentials

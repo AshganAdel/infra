@@ -1,0 +1,5 @@
+helm_version: "v3.14.2"
+helm_os: linux
+helm_arch: amd64
+helm_tarball: "helm-{{ helm_version }}-{{ helm_os }}-{{ helm_arch }}.tar.gz"
+helm_url: "https://get.helm.sh/{{ helm_tarball }}"

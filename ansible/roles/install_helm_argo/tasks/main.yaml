@@ -1,0 +1,48 @@
+- name: get eks kubeconfig
+  command: aws eks update-kubeconfig --region eu-north-1 --name test
+  
+- name: Download Helm archive
+  become: true
+  get_url:
+    url: "{{ helm_url }}"
+    dest: "/tmp/{{ helm_tarball }}"
+    mode: '0644'
+
+- name: Extract Helm archive
+  become: true
+  unarchive:
+    src: "/tmp/{{ helm_tarball }}"
+    dest: /tmp
+    remote_src: yes
+
+- name: Move helm binary to /usr/local/bin
+  become: true
+  copy:
+    src: "/tmp/{{ helm_os }}-{{ helm_arch }}/helm"
+    dest: /usr/local/bin/helm
+    mode: '0755'
+    remote_src: yes
+
+- name: Verify Helm installation
+  command: helm version --short
+  register: helm_version_output
+
+- name: Show Helm version
+  debug:
+    msg: "{{ helm_version_output.stdout }}"
+    
+  
+- name: Add ArgoCD Helm repo
+  kubernetes.core.helm_repository:
+    name: argo
+    repo_url: https://argoproj.github.io/argo-helm
+    kubeconfig: /home/ubuntu/.kube/config
+
+- name: Install ArgoCD
+  kubernetes.core.helm:
+    name: argocd
+    chart_ref: argo/argo-cd
+    release_namespace: argocd
+    create_namespace: true
+    kubeconfig: /home/ubuntu/.kube/config
+

@@ -1,0 +1,14 @@
+- name: Update apt cache 
+  become: true
+  apt: 
+    update_cache: yes 
+
+- name: Install java
+  become: true
+  apt:
+    name:
+      - fontconfig
+      - openjdk-21-jre
+    state: present
+
+  

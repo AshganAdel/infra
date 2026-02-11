@@ -1,0 +1,7 @@
+- name: Download kubectl with checksum verification
+  become: true
+  get_url:
+    url: https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.4/2024-09-11/bin/linux/amd64/kubectl
+    dest: /usr/local/bin/kubectl
+    mode: '0755'
+    checksum: sha256:https://s3.us-west-2.amazonaws.com/amazon-eks/1.30.4/2024-09-11/bin/linux/amd64/kubectl.sha256

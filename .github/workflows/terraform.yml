@@ -77,6 +77,6 @@ jobs:
             | .value.ansible_host
             | if type=="object" then .__ansible_unsafe else . end
           ' | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
-          ansible-playbook playbook.yml
+          ansible-playbook playbook.yml --vault-password-file <(echo "${{ secrets.ANSIBLE_VAULT_PASSWORD }}")
         working-directory: ansible
       

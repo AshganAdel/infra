@@ -70,10 +70,12 @@ jobs:
         run: |
           ansible-inventory -i aws_ec2.yml --list \
           | jq -r '
-          ._meta.hostvars
-          | to_entries[]
-          | .value.ansible_host 
-          | if type=="object" then .__ansible_unsafe else . end 
+            ._meta.hostvars
+            | to_entries[]
+            | .value.ansible_host 
+            | if type=="object" then .__ansible_unsafe else . end
+          ' \  
+          | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
           ansible-playbook playbook.yml
         working-directory: ansible
       

@@ -1,8 +1,5 @@
 - name: k8s setup 
-  connection: amazon.aws.aws_ssm
   hosts: all
-  vars:
-    ec2_name: "{{ ec2_tags.Name | default('agent') }}"
   roles:
     #- awscli
     #- kubectl

@@ -67,6 +67,13 @@ jobs:
           pip3 install ansible boto3 botocore 
           ansible-galaxy collection install amazon.aws
       - name: Run Ansible Playbook
-        run: ansible-playbook playbook.yml
+        run: |
+          ansible-inventory -i aws_ec2.yml --list \
+          | jq -r '
+          ._meta.hostvars
+          | to_entries[]
+          | .value.ansible_host 
+          | if type=="object" then .__ansible_unsafe else . end 
+          ansible-playbook playbook.yml
         working-directory: ansible
       

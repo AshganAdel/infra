@@ -1,4 +1,4 @@
-name: 'Terraform'
+name: 'Terraform or Ansible'
 run-name: ${{inputs.action}}
 on:
   workflow_dispatch:
@@ -11,19 +11,21 @@ on:
           - plan
           - apply
           - destroy
+          - ansible
 permissions:
   contents: read
+  id-token: write
 jobs:
   Terraform:
+    if: ${{ inputs.action != 'ansible' }}
     runs-on: ubuntu-latest
     steps:
     - name: checkout code
       uses: actions/checkout@v3
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v3
+      uses: aws-actions/configure-aws-credentials@v4
       with:
-        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
-        aws-secret-access-key: ${{ secrets.SECRET_KEY }}
+        role-to-assume: arn:aws:iam::101561167685:role/githubrolev
         aws-region: eu-north-1
     - name: setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -40,5 +42,24 @@ jobs:
       working-directory: terraform
     - name: Terraform Destroy
       if: ${{ inputs.action == 'destroy' }}
+
+  ansible:
+    if: ${{ inputs.action == 'ansible' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Configure AWS credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          role-to-assume: arn:aws:iam::101561167685:role/githubrolev
+          aws-region: eu-north-1
+      - name: Install Ansible
+        run: |
+          sudo apt update
+          sudo apt install -y ansible
+      - name: Run Ansible Playbook
+        run: |
+          ansible-playbook ansible/playbook.yml
       run: terraform destroy -auto-approve --var-file=var.tfvars
       working-directory: terraform

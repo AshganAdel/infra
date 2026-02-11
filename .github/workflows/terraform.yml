@@ -23,9 +23,10 @@ jobs:
     - name: checkout code
       uses: actions/checkout@v3
     - name: Configure AWS credentials
-      uses: aws-actions/configure-aws-credentials@v4
+      uses: aws-actions/configure-aws-credentials@v3
       with:
-        role-to-assume: arn:aws:iam::101561167685:role/githubrole
+        aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+        aws-secret-access-key: ${{ secrets.SECRET_KEY }}
         aws-region: eu-north-1
     - name: setup Terraform
       uses: hashicorp/setup-terraform@v3
@@ -51,9 +52,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: Configure AWS credentials
-        uses: aws-actions/configure-aws-credentials@v4
+        uses: aws-actions/configure-aws-credentials@v3
         with:
-          role-to-assume: arn:aws:iam::101561167685:role/githubrole
+          aws-access-key-id: ${{ secrets.ACCESS_KEY }}
+          aws-secret-access-key: ${{ secrets.SECRET_KEY }}
           aws-region: eu-north-1
       - name: add sshkey 
         run: |

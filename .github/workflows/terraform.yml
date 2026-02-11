@@ -42,7 +42,8 @@ jobs:
       working-directory: terraform
     - name: Terraform Destroy
       if: ${{ inputs.action == 'destroy' }}
-
+      run: terraform destroy -auto-approve --var-file=var.tfvars
+      working-directory: terraform
   ansible:
     if: ${{ inputs.action == 'ansible' }}
     runs-on: ubuntu-latest
@@ -61,5 +62,4 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           ansible-playbook ansible/playbook.yml
-      run: terraform destroy -auto-approve --var-file=var.tfvars
-      working-directory: terraform
+      

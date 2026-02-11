@@ -59,7 +59,7 @@ jobs:
         run: |
           sudo apt update
           sudo apt install -y python3-pip
-          pip3 install ansible boto3 botocore amazon.aws
+          pip3 install ansible boto3 botocore 
           ansible-galaxy collection install amazon.aws
       - name: Run Ansible Playbook
         run: ansible-playbook playbook.yml

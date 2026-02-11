@@ -69,9 +69,9 @@ jobs:
       - name: Run Ansible Playbook
         run: |
           ansible-inventory -i aws_ec2.yml --list
-          ansible-inventory -i aws_ec2.yml --list \
-          | jq -r '.all.hosts[] as $h | ._meta.hostvars[$h].ansible_host' \
-          | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
-          ansible-playbook playbook.yml
+          # ansible-inventory -i aws_ec2.yml --list \
+          # | jq -r '.all.hosts[] as $h | ._meta.hostvars[$h].ansible_host' \
+          # | xargs -I{} ssh-keyscan -H {} >> ~/.ssh/known_hosts
+          # ansible-playbook playbook.yml
         working-directory: ansible
       

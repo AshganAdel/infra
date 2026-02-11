@@ -3,7 +3,7 @@
   hosts: all
   vars_files:
     #- secrets.yml
-    - vars.yml
+    #- vars.yml
   roles:
     #- awscli
     #- kubectl

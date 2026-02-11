@@ -61,6 +61,6 @@ jobs:
           sudo apt install -y python3-pip
           sudo apt install python3-boto3 python3-botocore -y
       - name: Run Ansible Playbook
-        run: |
-          ansible-playbook ansible/playbook.yml
+        run: ansible-playbook playbook.yml
+        working-directory: ansible
       

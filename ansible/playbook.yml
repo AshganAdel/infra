@@ -4,7 +4,7 @@
     - secrets.yml
   roles:
     - awscli
-    #- kubectl
+    - kubectl
     #- install_helm_argo
     - docker
     - install_java

@@ -57,7 +57,7 @@ jobs:
           aws-region: eu-north-1
       - name: add sshkey 
         run: |
-          touch ~/.ssh/id_rsa
+          mkdir -p ~/.ssh
           sudo echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
           chmod 600 ~/.ssh/id_rsa
       - name: Install Ansible

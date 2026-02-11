@@ -55,6 +55,10 @@ jobs:
         with:
           role-to-assume: arn:aws:iam::101561167685:role/githubrole
           aws-region: eu-north-1
+      - name: add sshkey 
+        run: |
+          sudo echo "${{ secrets.EC2_SSH_KEY }}" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
       - name: Install Ansible
         run: |
           sudo apt update

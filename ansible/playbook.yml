@@ -1,7 +1,9 @@
 - name: k8s setup 
   hosts: all
+  vars_files:
+    - secrets.yml
   roles:
-    #- awscli
+    - awscli
     #- kubectl
     #- install_helm_argo
     - docker

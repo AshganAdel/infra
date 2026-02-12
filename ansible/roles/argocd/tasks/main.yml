@@ -17,6 +17,7 @@
     kubectl patch svc argocd-server -n argocd -p '{"spec": {"type": "LoadBalancer"}}'
 
 - name: Get latest ArgoCD CLI version
+  become: true
   uri:
     url: https://api.github.com/repos/argoproj/argo-cd/releases/latest
     return_content: yes
@@ -27,6 +28,7 @@
     argocd_version: "{{ argocd_release.json.tag_name }}"
 
 - name: Download ArgoCD CLI
+  become: true
   get_url:
     url: "https://github.com/argoproj/argo-cd/releases/download/{{ argocd_version }}/argocd-linux-amd64"
     dest: /usr/local/bin/argocd

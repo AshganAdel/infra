@@ -73,36 +73,11 @@
   register: argocd_login
   changed_when: "'Logged in' in argocd_login.stdout"
 
-- name: create application set
-  shell: |
-    kubectl create -f - <<EOF
-    apiVersion: argoproj.io/v1alpha1
-    kind: ApplicationSet
-    metadata:
-      name: tetris-set
-      namespace: argocd
-    spec:
-      generators:
-      - git:
-          repoURL: https://github.com/tetris-app1/Application_Repo.git
-          revision: main
-          directories:
-          - path: apps/*
-      template:
-        metadata:
-          name: '{{path.basename }}'
-    
-        spec:
-          project: default
-          source:
-            repoURL: https://github.com/tetris-app1/Application_Repo.git
-            targetRevision: main
-            path: '{{path}}'
-          destination:
-            server: https://kubernetes.default.svc
-            namespace: default
-          syncPolicy:
-            automated:
-              prune: true
-              selfHeal: true
-    EOF
+ - name: Copy Application.yaml to temporary location
+   copy:
+    src: "{{ role_path }}/tasks/Application.yaml"
+    dest: "/tmp/Application.yaml"
+    mode: '0644'
+
+ - name: Create ApplicationSet
+   command: kubectl apply -f /tmp/Application.yaml

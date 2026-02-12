@@ -73,6 +73,12 @@
   register: argocd_login
   changed_when: "'Logged in' in argocd_login.stdout"
 
+- name: Add GitHub repo to ArgoCD
+  command: >
+    argocd repo add https://github.com/tetris-app1/Application_Repo.git
+    --username {{ argocd_repo_username }}
+    --password {{ argocd_repo_password }}
+
 - name: Copy Application.yaml to temporary location
   copy:
     src: "{{ role_path }}/tasks/Application.yaml"

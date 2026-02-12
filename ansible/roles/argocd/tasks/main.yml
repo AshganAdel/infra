@@ -73,11 +73,10 @@
   register: argocd_login
   changed_when: "'Logged in' in argocd_login.stdout"
 
- - name: Copy Application.yaml to temporary location
-   copy:
+- name: Copy Application.yaml to temporary location
+  copy:
     src: "{{ role_path }}/tasks/Application.yaml"
     dest: "/tmp/Application.yaml"
     mode: '0644'
-
- - name: Create ApplicationSet
+- name: Create ApplicationSet
    command: kubectl apply -f /tmp/Application.yaml

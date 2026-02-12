@@ -2,12 +2,16 @@
   hosts: all
   vars_files:
     - secrets.yml
+    - vars.yml
   roles:
+    - install_java
+    - docker
     - awscli
     - kubectl
-    #- install_helm_argo
-    - docker
-    - install_java
+    - helm
+    - argocd
+    
+    
  
 
 

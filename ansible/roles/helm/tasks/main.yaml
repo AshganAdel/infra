@@ -32,17 +32,4 @@
     msg: "{{ helm_version_output.stdout }}"
     
   
-- name: Add ArgoCD Helm repo
-  kubernetes.core.helm_repository:
-    name: argo
-    repo_url: https://argoproj.github.io/argo-helm
-    kubeconfig: /home/ubuntu/.kube/config
-
-- name: Install ArgoCD
-  kubernetes.core.helm:
-    name: argocd
-    chart_ref: argo/argo-cd
-    release_namespace: argocd
-    create_namespace: true
-    kubeconfig: /home/ubuntu/.kube/config
 

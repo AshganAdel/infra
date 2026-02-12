@@ -79,4 +79,4 @@
     dest: "/tmp/Application.yaml"
     mode: '0644'
 - name: Create ApplicationSet
-   command: kubectl apply -f /tmp/Application.yaml
+  command: kubectl apply -f /tmp/Application.yaml

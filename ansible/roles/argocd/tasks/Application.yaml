@@ -1,0 +1,29 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: tetris-set
+  namespace: argocd
+spec:
+  generators:
+  - git:
+      repoURL: https://github.com/tetris-app1/Application_Repo.git
+      revision: main
+      directories:
+      - path: apps/*
+  template:
+    metadata:
+      name: '{{path.basename }}'
+
+    spec:
+      project: default
+      source:
+        repoURL: https://github.com/tetris-app1/Application_Repo.git
+        targetRevision: main
+        path: '{{path}}'
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: default
+      syncPolicy:
+        automated:
+          prune: true
+          selfHeal: true
